@@ -21,6 +21,12 @@ class HX711Sensor : public sensor::Sensor, public PollingComponent {
   void set_sck_pin(GPIOPin *sck_pin) { sck_pin_ = sck_pin; }
   void set_gain(HX711Gain gain) { gain_ = gain; }
 
+  // puts the chip into power down mode
+	void power_down();
+
+	// wakes up the chip after power down mode
+	void power_up();
+
   void setup() override;
   void dump_config() override;
   float get_setup_priority() const override;
