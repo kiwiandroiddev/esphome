@@ -85,7 +85,7 @@ bool HX711Sensor::read_sensor_(uint32_t *result) {
   return true;
 }
 
-void HX711::power_down() {
+void HX711Sensor::power_down() {
   ESP_LOGW(TAG, "HX711 powering down...");
 //	digitalWrite(PD_SCK, LOW);
 //	digitalWrite(PD_SCK, HIGH);
@@ -96,7 +96,7 @@ void HX711::power_down() {
   delayMicroseconds(1);
 }
 
-void HX711::power_up() {
+void HX711Sensor::power_up() {
   ESP_LOGW(TAG, "HX711 powering up...");
 //	digitalWrite(PD_SCK, LOW);
 
