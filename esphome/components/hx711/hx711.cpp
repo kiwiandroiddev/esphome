@@ -33,12 +33,12 @@ void HX711Sensor::update() {
   }
 }
 bool HX711Sensor::read_sensor_(uint32_t *result) {
-  this->power_up();
+//  this->power_up();
 
   if (this->dout_pin_->digital_read()) {
     ESP_LOGW(TAG, "HX711 is not ready for new measurements yet!");
     this->status_set_warning();
-    this->power_down();
+//    this->power_down();
     return false;
   }
 
@@ -68,7 +68,7 @@ bool HX711Sensor::read_sensor_(uint32_t *result) {
   if (!final_dout) {
     ESP_LOGW(TAG, "HX711 DOUT pin not high after reading (data 0x%" PRIx32 ")!", data);
     this->status_set_warning();
-    this->power_down();
+//    this->power_down();
     return false;
   }
 
@@ -81,7 +81,7 @@ bool HX711Sensor::read_sensor_(uint32_t *result) {
   if (result != nullptr)
     *result = data;
 
-  this->power_down();
+//  this->power_down();
   return true;
 }
 
