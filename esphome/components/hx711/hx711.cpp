@@ -93,7 +93,7 @@ void HX711Sensor::power_down() {
   this->sck_pin_->digital_write(false);
   delayMicroseconds(1);
   this->sck_pin_->digital_write(true);
-  delayMicroseconds(1);
+  delayMicroseconds(1000);
 }
 
 void HX711Sensor::power_up() {
@@ -101,7 +101,7 @@ void HX711Sensor::power_up() {
 //	digitalWrite(PD_SCK, LOW);
 
   this->sck_pin_->digital_write(false);
-  delayMicroseconds(1);
+  delayMicroseconds(1000);
 }
 
 }  // namespace hx711
