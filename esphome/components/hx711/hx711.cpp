@@ -8,7 +8,8 @@ namespace hx711 {
 static const char *const TAG = "hx711";
 
 void HX711Sensor::setup() {
-  ESP_LOGCONFIG(TAG, "Setting up HX711 (Low Power Mod v2) '%s'...", this->name_.c_str());
+  ESP_LOGCONFIG(TAG, "Setting up HX711 (Low Power Mod) '%s'...", this->name_.c_str());
+  ESP_LOGW(TAG, "HX711 (Low Power Mod v2) setup");
 //  this->is_powered_down = false;
   this->sck_pin_->setup();
   this->dout_pin_->setup();
