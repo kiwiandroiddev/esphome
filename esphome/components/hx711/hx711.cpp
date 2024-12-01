@@ -37,12 +37,26 @@ void HX711Sensor::update() {
 bool HX711Sensor::read_sensor_(uint32_t *result) {
   this->power_up();
 
-  if (this->dout_pin_->digital_read()) {
-    ESP_LOGW(TAG, "HX711 is not ready for new measurements yet!");
-    this->status_set_warning();
-    this->power_down();
-    return false;
+  int retries = 0;
+  while (this->dout_pin_->digital_read()) {
+    ESP_LOGW(TAG, "HX711 is not ready for new measurements yet! Retrying after delay...");
+    retries++;
+    delay(100);
+
+    if (retries >= 10) {
+      ESP_LOGW(TAG, "HX711 still not ready after multiple retries. Aborting");
+      this->status_set_warning();
+      this->power_down();
+      return false;
+    }
   }
+
+//  if (this->dout_pin_->digital_read()) {
+//    ESP_LOGW(TAG, "HX711 is not ready for new measurements yet!");
+//    this->status_set_warning();
+//    this->power_down();
+//    return false;
+//  }
 
   uint32_t data = 0;
   bool final_dout;
