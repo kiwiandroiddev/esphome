@@ -36,6 +36,7 @@ void HX711Sensor::update() {
 }
 bool HX711Sensor::read_sensor_(uint32_t *result) {
   this->power_up();
+  delay(100);
 
   if (this->dout_pin_->digital_read()) {
     ESP_LOGW(TAG, "HX711 is not ready for new measurements yet!");
@@ -88,7 +89,7 @@ bool HX711Sensor::read_sensor_(uint32_t *result) {
 }
 
 void HX711Sensor::power_down() {
-  ESP_LOGW(TAG, "HX711 powering down... test");
+  ESP_LOGW(TAG, "HX711 powering down...");
 //	digitalWrite(PD_SCK, LOW);
 //	digitalWrite(PD_SCK, HIGH);
 
@@ -104,7 +105,7 @@ void HX711Sensor::power_down() {
 }
 
 void HX711Sensor::power_up() {
-  ESP_LOGW(TAG, "HX711 powering up... test");
+  ESP_LOGW(TAG, "HX711 powering up...");
 //	digitalWrite(PD_SCK, LOW);
 
   if (!this->is_powered_down) {
