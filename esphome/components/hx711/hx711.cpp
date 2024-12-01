@@ -9,7 +9,7 @@ static const char *const TAG = "hx711";
 
 void HX711Sensor::setup() {
   ESP_LOGCONFIG(TAG, "Setting up HX711 (Low Power Mod) '%s'...", this->name_.c_str());
-  this->is_powered_down = false;
+//  this->is_powered_down = false;
   this->sck_pin_->setup();
   this->dout_pin_->setup();
   this->sck_pin_->digital_write(false);
