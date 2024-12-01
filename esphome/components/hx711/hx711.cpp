@@ -36,7 +36,6 @@ void HX711Sensor::update() {
 }
 bool HX711Sensor::read_sensor_(uint32_t *result) {
   this->power_up();
-  delay(100);
 
   if (this->dout_pin_->digital_read()) {
     ESP_LOGW(TAG, "HX711 is not ready for new measurements yet!");
@@ -89,14 +88,13 @@ bool HX711Sensor::read_sensor_(uint32_t *result) {
 }
 
 void HX711Sensor::power_down() {
-  ESP_LOGW(TAG, "HX711 powering down...");
-//	digitalWrite(PD_SCK, LOW);
-//	digitalWrite(PD_SCK, HIGH);
-
   if (this->is_powered_down) {
-    ESP_LOGW(TAG, "Already powered down, skipping.");
+    ESP_LOGW(TAG, "HX711 already powered down, skipping.");
     return;
+  } else {
+    ESP_LOGW(TAG, "HX711 powering down...");
   }
+
   this->is_powered_down = true;
   this->sck_pin_->digital_write(false);
   delayMicroseconds(1);
@@ -105,16 +103,19 @@ void HX711Sensor::power_down() {
 }
 
 void HX711Sensor::power_up() {
-  ESP_LOGW(TAG, "HX711 powering up...");
-//	digitalWrite(PD_SCK, LOW);
-
-  if (!this->is_powered_down) {
-    ESP_LOGW(TAG, "Already powered up, skipping.");
+  if (this->is_powered_down == false) {
+    ESP_LOGW(TAG, "HX711 already powered up, skipping.");
     return;
+  } else {
+    ESP_LOGW(TAG, "HX711 powering up...");
   }
+
   this->is_powered_down = false;
   this->sck_pin_->digital_write(false);
   delayMicroseconds(1000);
+
+  // test
+  delay(100);
 }
 
 }  // namespace hx711
