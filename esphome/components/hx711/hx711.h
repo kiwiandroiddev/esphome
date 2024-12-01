@@ -38,6 +38,7 @@ class HX711Sensor : public sensor::Sensor, public PollingComponent {
   GPIOPin *dout_pin_;
   GPIOPin *sck_pin_;
   HX711Gain gain_{HX711_GAIN_128};
+  bool is_powered_down;
 };
 
 }  // namespace hx711

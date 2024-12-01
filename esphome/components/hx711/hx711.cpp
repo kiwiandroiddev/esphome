@@ -9,6 +9,7 @@ static const char *const TAG = "hx711";
 
 void HX711Sensor::setup() {
   ESP_LOGCONFIG(TAG, "Setting up HX711 (Low Power Mod) '%s'...", this->name_.c_str());
+  this->is_powered_down = false;
   this->sck_pin_->setup();
   this->dout_pin_->setup();
   this->sck_pin_->digital_write(false);
@@ -33,12 +34,12 @@ void HX711Sensor::update() {
   }
 }
 bool HX711Sensor::read_sensor_(uint32_t *result) {
-//  this->power_up();
+  this->power_up();
 
   if (this->dout_pin_->digital_read()) {
     ESP_LOGW(TAG, "HX711 is not ready for new measurements yet!");
     this->status_set_warning();
-//    this->power_down();
+    this->power_down();
     return false;
   }
 
@@ -68,7 +69,7 @@ bool HX711Sensor::read_sensor_(uint32_t *result) {
   if (!final_dout) {
     ESP_LOGW(TAG, "HX711 DOUT pin not high after reading (data 0x%" PRIx32 ")!", data);
     this->status_set_warning();
-//    this->power_down();
+    this->power_down();
     return false;
   }
 
@@ -81,7 +82,7 @@ bool HX711Sensor::read_sensor_(uint32_t *result) {
   if (result != nullptr)
     *result = data;
 
-//  this->power_down();
+  this->power_down();
   return true;
 }
 
@@ -90,6 +91,11 @@ void HX711Sensor::power_down() {
 //	digitalWrite(PD_SCK, LOW);
 //	digitalWrite(PD_SCK, HIGH);
 
+  if (this->is_powered_down) {
+    ESP_LOGW(TAG, "Already powered down, skipping.");
+    return;
+  }
+  this->is_powered_down = true;
   this->sck_pin_->digital_write(false);
   delayMicroseconds(1);
   this->sck_pin_->digital_write(true);
@@ -100,6 +106,11 @@ void HX711Sensor::power_up() {
   ESP_LOGW(TAG, "HX711 powering up...");
 //	digitalWrite(PD_SCK, LOW);
 
+  if (!this->is_powered_down) {
+    ESP_LOGW(TAG, "Already powered up, skipping.");
+    return;
+  }
+  this->is_powered_down = false;
   this->sck_pin_->digital_write(false);
   delayMicroseconds(1000);
 }
